@@ -190,6 +190,7 @@ figure { margin: 0; }
 .keybar {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   background: var(--panel);
   padding: 0.15rem 0.5rem;
   font-size: 0.82rem;
@@ -207,6 +208,20 @@ figure { margin: 0; }
     font-size: inherit;
     color: var(--footer-key);
   }
+}
+
+// Keybar groups - left and right break separately
+// or so I hope, really.
+.keybar__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.keybar__sep {
+  color: var(--panel-lighten-2);
+  padding-inline: 0.5ch;
+  user-select: none;
 }
 
 // Hero ASCII banner and subheading.
@@ -485,7 +500,12 @@ figcaption {
   .mat { padding: 0.75rem; }
 
   .statusbar { text-align: center; }
+
+  // Collapse and center keybar when there's no more room
+  // Beats ugly double stacks for nothing.
   .keybar { justify-content: center; }
+  .keybar__group { justify-content: center; }
+  .keybar__sep { display: none; }
 }
 
 // The footer navigation links kind of stop fitting around 460px

@@ -48,31 +48,37 @@
     <span class="statusbar__dim">{{ config.extra.copyright }}</span>
   </div>
   <nav class="keybar" aria-label="Site navigation">
-    <a href="{{ config.extra.docs_url }}"><kbd>d</kbd> Docs</a>
-    <a href="{{ config.extra.install_url }}"><kbd>i</kbd> Install</a>
-    <a href="{{ config.extra.github_url }}"><kbd>g</kbd> GitHub</a>
-    <a href="{{ config.extra.pypi_url }}"><kbd>p</kbd> PyPI</a>
-    <a href="{{ config.extra.releases_url }}"><kbd>r</kbd> Releases</a>
+    <!-- Split in two groups -->
+    <span class="keybar__group">
+      <a href="#demo"><kbd>a</kbd> About</a>
+      <a href="#install"><kbd>i</kbd> Install</a>
+      <a href="{{ config.extra.docs_url }}"><kbd>d</kbd> Docs</a>
+    </span>
+    <span class="keybar__group">
+      <span class="keybar__sep" aria-hidden="true">&#9474;</span>
+      <a href="{{ config.extra.github_url }}"><kbd>g</kbd> GitHub</a>
+      <a href="{{ config.extra.pypi_url }}"><kbd>p</kbd> PyPI</a>
+    </span>
   </nav>
 </footer>
 
 <script>
 // Believe it or not, the shortcut keys actually work.
 // I hate the modern web, but here's a small allowance.
+// Keys are defined via <kbd> and dynamically looked up.
 (function () {
-  var map = {
-    d: {{ config.extra.docs_url | json_encode | safe }},
-    i: {{ config.extra.install_url | json_encode | safe }},
-    g: {{ config.extra.github_url | json_encode | safe }},
-    p: {{ config.extra.pypi_url | json_encode | safe }},
-    r: {{ config.extra.releases_url | json_encode | safe }}
-  };
+  var keys = {};
+  document.querySelectorAll(".keybar a").forEach(function (a) {
+    var k = a.querySelector("kbd");
+    if (k) keys[k.textContent.trim().toLowerCase()] = a;
+  });
   document.addEventListener("keydown", function (e) {
-    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.ctrlKey || e.altKey || e.metaKey || e.repeat) return;
     var t = e.target;
     if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
-    var url = map[e.key];
-    if (url) { e.preventDefault(); window.location.href = url; }
+    var a = keys[e.key.toLowerCase()];
+    // Click on real link, ensures anchors scroll
+    if (a) { e.preventDefault(); a.click(); }
   });
 })();
 </script>
