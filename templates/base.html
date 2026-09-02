@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+  <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121212">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ config.title }}">
+  <meta property="og:description" content="{{ config.description }}">
+  <meta property="og:image" content="{{ get_url(path='img/banner.svg') }}">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="{{ get_url(path='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ get_url(path='style.css') }}">
+
+  <!-- No CDNS, only organic fonts, sourced locally -->
+  <link rel="preload" href="{{ get_url(path='fonts/source-code-pro/SourceCodePro-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ get_url(path='fonts/source-code-pro/SourceCodePro-Medium.woff2') }}" as="font" type="font/woff2" crossorigin>
+</head>
+<body>
+
+{# Textual-like titlebar #}
+<header class="titlebar">
+  <span class="titlebar__icon" aria-hidden="true">&#11096;</span>
+  <span class="titlebar__title">
+    Exosphere<span class="titlebar__sub"> &mdash; {{ config.extra.subtitle }}</span>
+  </span>
+</header>
+
+<main id="main">
+{% block content %}{% endblock content %}
+</main>
+
+{# Footer and statusbar, mock Exosphere layout #}
+<footer class="chrome">
+  <div class="statusbar">
+    <span class="statusbar__accent">Exosphere</span>
+    <span class="statusbar__sep" aria-hidden="true">&#9474;</span>
+    <span class="statusbar__dim">{{ config.extra.copyright }}</span>
+  </div>
+  <nav class="keybar" aria-label="Site navigation">
+    <a href="{{ config.extra.docs_url }}"><kbd>d</kbd> Docs</a>
+    <a href="{{ config.extra.install_url }}"><kbd>i</kbd> Install</a>
+    <a href="{{ config.extra.github_url }}"><kbd>g</kbd> GitHub</a>
+    <a href="{{ config.extra.pypi_url }}"><kbd>p</kbd> PyPI</a>
+    <a href="{{ config.extra.releases_url }}"><kbd>r</kbd> Releases</a>
+  </nav>
+</footer>
+
+<script>
+// Believe it or not, the shortcut keys actually work.
+// I hate the modern web, but here's a small allowance.
+(function () {
+  var map = {
+    d: {{ config.extra.docs_url | json_encode | safe }},
+    i: {{ config.extra.install_url | json_encode | safe }},
+    g: {{ config.extra.github_url | json_encode | safe }},
+    p: {{ config.extra.pypi_url | json_encode | safe }},
+    r: {{ config.extra.releases_url | json_encode | safe }}
+  };
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    var url = map[e.key];
+    if (url) { e.preventDefault(); window.location.href = url; }
+  });
+})();
+</script>
+
+</body>
+</html>

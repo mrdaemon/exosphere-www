@@ -1,0 +1,39 @@
+# Exosphere website
+# Built with Zola: https://www.getzola.org/
+# Because it is a single binary, and carries fewer Go baggage than Hugo.
+
+# Base URL for production deployments
+base_url = "https://exosphere.tools/"
+
+title = "Exosphere"
+description = "A simple, agentless CLI and TUI driven patch reporting application for remote UNIX systems"
+
+# We allow SASS/SCSS because Zola compiles it on its own, so we might as well
+# make use of it here.
+compile_sass = true
+
+# No need for these
+build_search_index = false
+generate_feeds = false
+
+# Avoid server rewrites
+hard_link_static = false
+
+[markdown]
+# Use fancy typography like smart quotes and em dashes
+smart_punctuation = true
+
+[extra]
+# Short subtitle is shown in header, copyright in footer.
+subtitle = "Aggregated patch reporting over SSH"
+copyright = "© 2025–2026 Alexandre Gauthier"
+
+# Central list of external URLs, markdown pages refer to these directly
+# because Zola 0.23+ doesn't need shortcodes anymore, and it's easy.
+docs_url = "https://docs.exosphere.tools/en/stable/"
+quickstart_url = "https://docs.exosphere.tools/en/stable/quickstart.html"
+install_url = "https://docs.exosphere.tools/en/stable/installation.html"
+how_it_works_url = "https://docs.exosphere.tools/en/stable/concepts.html"
+github_url = "https://github.com/mrdaemon/exosphere"
+pypi_url = "https://pypi.org/project/exosphere-cli/"
+releases_url = "https://github.com/mrdaemon/exosphere/releases"

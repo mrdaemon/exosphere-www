@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{# Landing page, the main content of the site #}
+
+{% block content %}
+{% set e = section.extra %}
+
+{# Blocks are loaded from 'content/blocks' #}
+{% set demo    = get_page(path="blocks/demo.md") %}
+{% set blurb   = get_page(path="blocks/blurb.md") %}
+{% set remote  = get_page(path="blocks/remote.md") %}
+{% set install = get_page(path="blocks/install.md") %}
+{% set hosts   = get_page(path="blocks/hosts.md") %}
+
+{# hero ascii logo banner #}
+<section class="hero">
+  <h1 class="hero__mark">
+    <img class="hero__banner" src="{{ get_url(path='img/banner.svg') }}"
+         alt="Exosphere" width="450" height="160">
+  </h1>
+  <p class="hero__desc">{{ e.subheading }}</p>
+  <a class="hero__scroll" href="#demo" aria-label="Scroll to the demo">&#9662;</a>
+</section>
+
+{# demo section #}
+<section class="wrap block" id="demo">
+  <figure>
+    {% set thumbnail = get_image_metadata(path="static/img/demo-poster.png") %}
+    <div class="mat">
+      <video class="shot" controls playsinline preload="none"
+             width="{{ thumbnail.width }}" height="{{ thumbnail.height }}"
+             poster="{{ get_url(path='img/demo-poster.png') }}">
+        <source src="{{ get_url(path='video/demo.mp4') }}" type="video/mp4">
+        <p class="novideo">
+          Your browser will not play this, unfortunately.
+          <a href="{{ config.extra.github_url }}">The README</a> has the same
+          thing as an animated gif, however.
+        </p>
+      </video>
+    </div>
+    <figcaption class="prose">{{ demo.content | safe }}</figcaption>
+  </figure>
+
+  <div class="prose blurb">{{ blurb.content | safe }}</div>
+</section>
+
+{# Supported remote platforms #}
+<section class="wrap block" id="manages">
+  <h2 class="label">{{ remote.title }}</h2>
+  <ul class="platforms platforms--lg">
+    {% for p in remote.extra.platforms %}
+    <li>
+      <span class="platforms__icon">{{ load_data(path="static/icons/" ~ p.icon ~ ".svg", format="plain") | safe }}</span>
+      <span class="platforms__name">{{ p.name }}</span>
+      <span class="platforms__detail">{{ p.detail }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="prose note">{{ remote.content | safe }}</div>
+</section>
+
+{# Quick Install Blocks #}
+<section class="wrap block" id="install">
+  <div class="panel">
+    <h2 class="panel__label">{{ install.title }}</h2>
+    <div class="panel__body">
+      <div class="methods">
+        {% for m in install.extra.methods %}
+        <div class="method">
+          <div class="cmd" data-cmd="{{ m.cmd }}">
+            <span class="cmd__prompt" aria-hidden="true">$</span><code>{{ m.cmd }}</code>
+            <button class="cmd__copy" type="button" aria-label="Copy {{ m.label }} install command">copy</button>
+          </div>
+          <p class="method__note">{{ m.note }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="prose install__outro">{{ install.content | safe }}</div>
+    </div>
+  </div>
+</section>
+
+{# Supported application platforms #}
+<section class="wrap block block--last" id="runs-on">
+  <h2 class="label">{{ hosts.title }}</h2>
+  <ul class="platforms">
+    {% for p in hosts.extra.platforms %}
+    <li>
+      <span class="platforms__icon">{{ load_data(path="static/icons/" ~ p.icon ~ ".svg", format="plain") | safe }}</span>
+      <span class="platforms__name">{{ p.name }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="prose note">{{ hosts.content | safe }}</div>
+</section>
+
+<script>
+// Copy-to-clipboard bullshit script.
+// It SHOULD hide itself when the browser doesn't do the clipboard API.
+document.querySelectorAll(".cmd__copy").forEach(function (btn) {
+  if (!navigator.clipboard) { btn.hidden = true; return; }
+  btn.addEventListener("click", function () {
+    navigator.clipboard.writeText(btn.parentNode.dataset.cmd).then(function () {
+      var was = btn.textContent;
+      btn.textContent = "copied";
+      btn.classList.add("is-done");
+      setTimeout(function () { btn.textContent = was; btn.classList.remove("is-done"); }, 1400);
+    });
+  });
+});
+</script>
+{% endblock content %}

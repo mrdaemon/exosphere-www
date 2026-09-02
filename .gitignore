@@ -1,0 +1,17 @@
+# Zola build output
+/public/
+
+# Zola dev server scratch
+/.zola-*
+
+# Editor cruft
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS cruft
+.DS_Store
+Thumbs.db
+Desktop.ini
