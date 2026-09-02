@@ -1,0 +1,41 @@
+# CI job on pull requests to avoid broken stuff landing on main
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # We pin the Zola version in .version in the root.
+      - name: Read pinned Zola version
+        run: echo "ZOLA_VERSION=$(cat .version)" >> "$GITHUB_ENV"
+
+      - name: Build site
+        run: |
+          docker run --rm \
+            -u "$(id -u):$(id -g)" \
+            -v "$PWD:/site" --workdir /site \
+            "ghcr.io/getzola/zola:v${ZOLA_VERSION}" build
+
+  links:
+    runs-on: ubuntu-latest
+    # I deeply expect this to fail often because rate limiting
+    # on CI workers. Might disable later, for now info only.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Read pinned Zola version
+        run: echo "ZOLA_VERSION=$(cat .version)" >> "$GITHUB_ENV"
+
+      - name: Check links
+        run: |
+          docker run --rm \
+            -u "$(id -u):$(id -g)" \
+            -v "$PWD:/site" --workdir /site \
+            "ghcr.io/getzola/zola:v${ZOLA_VERSION}" check

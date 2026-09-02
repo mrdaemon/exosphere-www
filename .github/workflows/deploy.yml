@@ -1,0 +1,50 @@
+# Publish website to pages on every push to main.
+#
+# We build with zola from official container image, version pinned by
+# the .version file in the repo root.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# We REALLY do not want concurrency here.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Read pinned Zola version
+        run: echo "ZOLA_VERSION=$(cat .version)" >> "$GITHUB_ENV"
+
+      - name: Build site
+        run: |
+          docker run --rm \
+            -u "$(id -u):$(id -g)" \
+            -v "$PWD:/site" --workdir /site \
+            "ghcr.io/getzola/zola:v${ZOLA_VERSION}" build
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
