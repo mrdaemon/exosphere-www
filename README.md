@@ -71,9 +71,6 @@ license text in `static/fonts/source-code-pro/LICENSE.txt`. It is the same file
 the documentation ships, and the CSS falls back to DejaVu Sans Mono, as is
 tradition.
 
-Platform icons come from [Simple Icons](https://simpleicons.org/) (CC0),
-except `windows.svg`, which Simple Icons dropped somehow, and instead comes
-from [Font Awesome Free](https://fontawesome.com/) (icons under CC BY 4.0).
-
-The logos themselves remain trademarks of their respective projects and are
-used here nominatively, to say what Exosphere runs on and manages.
+The logos used on the page remain trademarks of their respective holders and
+are used here nominatively, to say what Exosphere runs on and manages.
+Their use implies no affiliation with, or endorsement by, the trademark holders.

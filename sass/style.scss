@@ -62,7 +62,24 @@
 
   --wrap: 880px;
 
+  // Height of the sticky bars at top and bottom.
+  // This ensures things that need to size BETWEEN them can use these
+  // as a calculation instead of magic numbers.
+  // (Although, they are magic numbers still, but AUTHORITATIVE magic).
+  --titlebar-h: 1.83rem;
+  --chrome-h:   3.43rem;
+
+  // Usable space between the bars.
+  --stage-h: calc(100vh - var(--titlebar-h) - var(--chrome-h));
+
   color-scheme: dark;
+}
+
+// Mobile browsers declare 100vh as BIG VIEWPORT, with the url bar hidden
+// So we separate here to use dvh, so old browsers keep the vh version.
+// I hate CSS so much, for real
+@supports (height: 100dvh) {
+  :root { --stage-h: calc(100dvh - var(--titlebar-h) - var(--chrome-h)); }
 }
 
 /* Base Styles */
@@ -70,6 +87,11 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
+
+// Ease the jump trigger by the anchor jump in the hero banner
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
 
 body {
   margin: 0;
@@ -113,6 +135,9 @@ figure { margin: 0; }
 
 .block { margin-block: 5rem; }
 .block--last { margin-bottom: 6rem; }
+
+// Titlebar is sticky, avoid parking top edge underneath it
+.block { scroll-margin-top: calc(var(--titlebar-h) + 1rem); }
 
 // Titlebar is also mostly lifted from Textual styles.
 .titlebar {
@@ -188,7 +213,7 @@ figure { margin: 0; }
 // It is dynamically sized to fit the viewport and go away in one clean scroll.
 // Or at least, that was the intent.
 .hero {
-  min-height: calc(100vh - 5.5rem);
+  min-height: var(--stage-h);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -241,12 +266,15 @@ figure { margin: 0; }
 
 // Don't actually upscale the video past its resolution
 // It looks SUPREMELY shitty otherwise.
+// Dimensions are set on element through data (front matter)
 .shot {
   display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
   margin-inline: auto;
+  width: var(--shot-w, auto);
+  height: auto;
+  // Ceilings yes, floors no: whichever snaps first wins.
+  max-width: 100%;
+  max-height: calc(var(--stage-h) - 2rem);
 }
 
 // Keep outline and stock video controls
@@ -416,6 +444,20 @@ figcaption {
   font-size: 0.86rem;
 }
 
+// Copyright and Trademark notice at the bottom
+// Smol on pupose. Legible but out of the way.
+.colophon {
+  max-width: 62ch;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--surface-lighten-1);
+  color: var(--foreground-muted);
+  font-size: 0.72rem;
+  line-height: 1.75;
+
+  a { color: var(--foreground-muted); }
+  a:hover, a:focus-visible { color: var(--primary); }
+}
+
 // Typography and prose styles
 
 .prose {
@@ -433,7 +475,6 @@ figcaption {
 
 @media (max-width: 700px) {
   .block { margin-block: 3.5rem; }
-  .hero  { min-height: calc(100vh - 6.5rem); }
 
   .methods { grid-template-columns: minmax(0, 1fr); }
 
@@ -445,4 +486,10 @@ figcaption {
 
   .statusbar { text-align: center; }
   .keybar { justify-content: center; }
+}
+
+// The footer navigation links kind of stop fitting around 460px
+// This means the rows grow by 1, and since we do calculations around that...
+@media (max-width: 460px) {
+  :root { --chrome-h: 5.35rem; }
 }

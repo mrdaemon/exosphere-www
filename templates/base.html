@@ -9,9 +9,14 @@
   <meta name="theme-color" content="#121212">
 
   <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ config.base_url }}">
   <meta property="og:title" content="{{ config.title }}">
   <meta property="og:description" content="{{ config.description }}">
-  <meta property="og:image" content="{{ get_url(path='img/banner.svg') }}">
+  {% set card = get_image_metadata(path="static/img/demo-poster.png") %}
+  <meta property="og:image" content="{{ get_url(path='img/demo-poster.png') }}">
+  <meta property="og:image:width" content="{{ card.width }}">
+  <meta property="og:image:height" content="{{ card.height }}">
+  <meta property="og:image:alt" content="{{ config.title }} showing package updates across several hosts">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="{{ get_url(path='img/favicon.svg') }}" type="image/svg+xml">

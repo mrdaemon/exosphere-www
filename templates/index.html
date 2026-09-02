@@ -6,11 +6,12 @@
 {% set e = section.extra %}
 
 {# Blocks are loaded from 'content/blocks' #}
-{% set demo    = get_page(path="blocks/demo.md") %}
-{% set blurb   = get_page(path="blocks/blurb.md") %}
-{% set remote  = get_page(path="blocks/remote.md") %}
-{% set install = get_page(path="blocks/install.md") %}
-{% set hosts   = get_page(path="blocks/hosts.md") %}
+{% set demo      = get_page(path="blocks/demo.md") %}
+{% set blurb     = get_page(path="blocks/blurb.md") %}
+{% set remote    = get_page(path="blocks/remote.md") %}
+{% set install   = get_page(path="blocks/install.md") %}
+{% set hosts     = get_page(path="blocks/hosts.md") %}
+{% set trademark = get_page(path="blocks/trademark.md") %}
 
 {# hero ascii logo banner #}
 <section class="hero">
@@ -25,10 +26,10 @@
 {# demo section #}
 <section class="wrap block" id="demo">
   <figure>
-    {% set thumbnail = get_image_metadata(path="static/img/demo-poster.png") %}
     <div class="mat">
       <video class="shot" controls playsinline preload="none"
-             width="{{ thumbnail.width }}" height="{{ thumbnail.height }}"
+             style="--shot-w: {{ demo.extra.width }}px"
+             width="{{ demo.extra.width }}" height="{{ demo.extra.height }}"
              poster="{{ get_url(path='img/demo-poster.png') }}">
         <source src="{{ get_url(path='video/demo.mp4') }}" type="video/mp4">
         <p class="novideo">
@@ -81,7 +82,7 @@
 </section>
 
 {# Supported application platforms #}
-<section class="wrap block block--last" id="runs-on">
+<section class="wrap block" id="runs-on">
   <h2 class="label">{{ hosts.title }}</h2>
   <ul class="platforms">
     {% for p in hosts.extra.platforms %}
@@ -92,6 +93,11 @@
     {% endfor %}
   </ul>
   <div class="prose note">{{ hosts.content | safe }}</div>
+</section>
+
+{# Trademark Notices #}
+<section class="wrap block block--last colophon" id="credits">
+  <div class="prose">{{ trademark.content | safe }}</div>
 </section>
 
 <script>

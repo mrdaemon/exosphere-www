@@ -1,0 +1,11 @@
+<!-- Generic application window: a frame, a title bar and two controls. The
+     ordinary GUI metaphor, drawn here rather than vendored. Deliberately NOT
+     a four-pane grid, which is the shape Microsoft's own marks use. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 2 20 20" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <rect x="3" y="4.75" width="18" height="14.5" rx="2"/>
+  <path d="M3 9.25h18"/>
+  <circle cx="6.4" cy="7" r=".85" fill="currentColor" stroke="none"/>
+  <circle cx="9.2" cy="7" r=".85" fill="currentColor" stroke="none"/>
+</svg>
