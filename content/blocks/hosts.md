@@ -19,4 +19,4 @@ platforms = [
 ]
 +++
 
-…and anywhere else Python 3.13 or above runs.
+...and anywhere else Python 3.13 or above runs.

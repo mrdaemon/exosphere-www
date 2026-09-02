@@ -15,4 +15,4 @@ platforms = [
 ]
 +++
 
-…and their derivatives. Other POSIX systems get connectivity checks.
+...and their derivatives. Other POSIX systems get connectivity checks.
