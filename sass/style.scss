@@ -313,6 +313,9 @@ figcaption {
   max-width: 66ch;
   color: var(--foreground-muted);
 
+  // Don't anchor under titlebar
+  scroll-margin-top: calc(var(--titlebar-h) + 1rem);
+
   // Markdown has a level 2 heading
   h2 {
     margin: 0 0 1.3rem;
