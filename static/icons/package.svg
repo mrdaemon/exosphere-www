@@ -1,0 +1,10 @@
+<!-- Genric Package Icon, Isometric
+Used as a stand-in for DNF based systems.
+I had no idea what else to use, so here we are.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 2 20 20" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <path d="M12 2.8 21 7.4v9.2L12 21.2 3 16.6V7.4Z"/>
+  <path d="M3 7.4 12 12l9-4.6M12 12v9.2"/>
+</svg>
