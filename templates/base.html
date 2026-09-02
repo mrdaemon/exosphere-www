@@ -12,11 +12,12 @@
   <meta property="og:url" content="{{ config.base_url }}">
   <meta property="og:title" content="{{ config.title }}">
   <meta property="og:description" content="{{ config.description }}">
-  {% set card = get_image_metadata(path="static/img/demo-poster.png") %}
-  <meta property="og:image" content="{{ get_url(path='img/demo-poster.png') }}">
+  {% set card = get_image_metadata(path="static/img/og-card.png") %}
+  <meta property="og:image" content="{{ get_url(path='img/og-card.png') }}">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="{{ card.width }}">
   <meta property="og:image:height" content="{{ card.height }}">
-  <meta property="og:image:alt" content="{{ config.title }} showing package updates across several hosts">
+  <meta property="og:image:alt" content="The {{ config.title }} wordmark on a terminal-styled card, above the tagline: agentless patch reporting for remote UNIX systems">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="{{ get_url(path='img/favicon.svg') }}" type="image/svg+xml">

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!--
+  "Source" for what becomes the OpenGraph preview card.
+
+  Intended to be rendered at 2x then downscaled, with a static window size of
+  1200x630.
+
+  To reproduce you'll need to build the tree somewhere, preferably with a base
+  url parameter, then serve it somehow (python -m http.server is easy), then
+  copy this file in the root of the output directory.
+
+  Use whatever means to render at 2x and downscale, I did headless msedge
+  because I made this on windows and it has --force-device-scale-factor.
+
+  Then you can resize with Python Pillow or imagick or whatever.
+  Would recommend LANCZOS as algorithm + optimize/crush if possible.
+
+  If this changes a lot I'll automate it but for now as a one off, eh.
+
+  The page below mostly just uses assets from the source tree and makes
+  a mock textual ui around the ASCII logo.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("/fonts/source-code-pro/SourceCodePro-Regular.woff2") format("woff2");
+  font-style: normal; font-weight: 400; font-display: block;
+}
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("/fonts/source-code-pro/SourceCodePro-Medium.woff2") format("woff2");
+  font-style: normal; font-weight: 500; font-display: block;
+}
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("/fonts/source-code-pro/SourceCodePro-It.woff2") format("woff2");
+  font-style: italic; font-weight: 400; font-display: block;
+}
+:root {
+  --background:#121212; --surface:#1e1e1e; --panel:#242f38;
+  --panel-lighten-2:#45505a; --foreground:#e0e0e0; --foreground-muted:#e0e0e099;
+  --accent:#fea62b; --footer-key:#ffa62b; --banner-ver:#d78700;
+  --mono:"Source Code Pro","DejaVu Sans Mono",ui-monospace,monospace;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { width:1200px; height:630px; }
+body {
+  background:var(--background); color:var(--foreground);
+  font-family:var(--mono); -webkit-font-smoothing:auto;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+
+/* Titlebar but scaled */
+.titlebar {
+  flex:none; display:flex; align-items:center;
+  background:var(--panel); padding:0 26px; height:54px;
+  font-size:19px; line-height:1.5;
+}
+.titlebar__icon { flex:none; }
+.titlebar__title { flex:1; text-align:center; margin-right:2ch; white-space:nowrap; }
+.titlebar__sub { opacity:.55; }
+
+/* Center stage with svg banner */
+.stage {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:44px;
+  padding:0 40px;
+}
+/* 2x the SVG for pixel perfect resize */
+.banner { width:900px; height:320px; display:block; }
+.tag {
+  color:var(--banner-ver); font-weight:500; font-size:27px; line-height:1.5;
+  letter-spacing:.01em; text-align:center;
+}
+
+/* Statusbar + footer */
+.statusbar {
+  flex:none; background:var(--surface); padding:5px 26px; text-align:right;
+  font-size:16px; font-style:italic;
+}
+.statusbar__dim { color:var(--foreground-muted); }
+.keybar {
+  flex:none; display:flex; justify-content:space-between; align-items:center;
+  background:var(--panel); padding:0 18px; height:52px; font-size:19px;
+}
+.keybar__group { display:flex; align-items:center; }
+.keybar a { color:var(--foreground); text-decoration:none; padding:0 16px; }
+.keybar kbd { font-family:inherit; font-size:inherit; color:var(--footer-key); }
+.keybar__sep { color:var(--panel-lighten-2); padding:0 .5ch; }
+</style>
+</head>
+<body>
+
+<header class="titlebar">
+  <span class="titlebar__icon">&#11096;</span>
+  <span class="titlebar__title">Exosphere</span>
+</header>
+
+<main class="stage">
+  <img class="banner" src="/img/banner.svg" alt="Exosphere">
+  <p class="tag">Agentless patch reporting for remote UNIX systems</p>
+</main>
+
+<div class="statusbar"><span class="statusbar__dim">exosphere.tools</span></div>
+<nav class="keybar">
+  <span class="keybar__group">
+    <a><kbd>^r</kbd> Refresh Updates</a><a><kbd>^x</kbd> Sync &amp; Refresh</a><a><kbd>l</kbd> Logs</a>
+  </span>
+  <span class="keybar__group">
+    <span class="keybar__sep">&#9474;</span>
+    <a><kbd>^p</kbd> palette</a>
+  </span>
+</nav>
+
+</body>
+</html>
