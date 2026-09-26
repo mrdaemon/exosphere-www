@@ -2,6 +2,41 @@
 
 {# Landing page, the main content of the site #}
 
+{% block head %}
+{# 
+  It's time to do the stupid ld-json garbage
+  We're pulling fields from other blocks to consistently keep this up to date
+  Fields are lined up with what google expects and we hope other indexers kind
+  of follow suit, more or less.
+  Refs: https://developers.google.com/search/docs/appearance/structured-data/software-app
+        https://schema.org/SoftwareApplication
+#}
+{% set hosts = get_page(path="blocks/hosts.md") %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": {{ config.title | json_encode | safe }},
+  "alternateName": "exosphere-cli",
+  "description": {{ config.description | json_encode | safe }},
+  "url": {{ config.base_url | json_encode | safe }},
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": [{% for p in hosts.extra.platforms %}{{ p.name | json_encode | safe }}{% if not loop.last %}, {% endif %}{% endfor %}],
+  "softwareRequirements": "Python 3.13 or later",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": { "@type": "Person", "name": {{ config.extra.author | json_encode | safe }} },
+  "downloadUrl": {{ config.extra.pypi_url | json_encode | safe }},
+  "installUrl": {{ config.extra.install_url | json_encode | safe }},
+  "sameAs": [
+    {{ config.extra.github_url | json_encode | safe }},
+    {{ config.extra.pypi_url | json_encode | safe }},
+    {{ config.extra.docs_url | json_encode | safe }}
+  ],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+{% endblock head %}
+
 {% block content %}
 {% set e = section.extra %}
 
@@ -17,7 +52,8 @@
 <section class="hero">
   <h1 class="hero__mark">
     <img class="hero__banner" src="{{ get_url(path='img/banner.svg') }}"
-         alt="Exosphere" width="450" height="160">
+         alt="" width="450" height="160">
+    <span class="visually-hidden">{{ config.title }} — {{ config.extra.subtitle }}</span>
   </h1>
   <p class="hero__desc">{{ e.subheading }}</p>
   <a class="hero__scroll" href="#demo" aria-label="Scroll to the demo">&#9662;</a>
